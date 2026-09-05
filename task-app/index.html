@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#fff8f5" />
+    <title>リズムワーク｜からだと気分に合わせるフリーランスのタスク管理</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div>
+          <p class="brand">リズムワーク</p>
+          <p class="today" id="todayLabel"></p>
+        </div>
+        <div class="streak" id="streakBadge" title="連続チェックイン日数">🔥 0日</div>
+      </header>
+
+      <!-- ===== ホーム ===== -->
+      <section class="view" id="view-home">
+        <div class="card phase-card" id="phaseCard">
+          <div class="phase-head">
+            <span class="phase-badge" id="phaseBadge">周期未設定</span>
+            <span class="phase-day" id="phaseDay"></span>
+          </div>
+          <p class="phase-copy" id="phaseCopy">カレンダーで生理開始日を登録すると、今のからだの時期とおすすめの働き方が表示されます。</p>
+          <p class="phase-next" id="phaseNext"></p>
+        </div>
+
+        <div class="card">
+          <h2>今日のコンディション</h2>
+          <p class="hint">正直に記録するほど、おすすめの精度が上がります。</p>
+
+          <label class="field-label">エネルギー</label>
+          <div class="scale" id="energyScale" role="radiogroup" aria-label="エネルギー">
+            <button type="button" class="scale-btn" data-value="1">😴<span>ぐったり</span></button>
+            <button type="button" class="scale-btn" data-value="2">😌<span>低め</span></button>
+            <button type="button" class="scale-btn" data-value="3">🙂<span>ふつう</span></button>
+            <button type="button" class="scale-btn" data-value="4">😊<span>良い</span></button>
+            <button type="button" class="scale-btn" data-value="5">🔥<span>絶好調</span></button>
+          </div>
+
+          <label class="field-label">気分</label>
+          <div class="scale" id="moodScale" role="radiogroup" aria-label="気分">
+            <button type="button" class="scale-btn" data-value="1">🌧<span>しんどい</span></button>
+            <button type="button" class="scale-btn" data-value="2">☁️<span>もやもや</span></button>
+            <button type="button" class="scale-btn" data-value="3">⛅<span>まあまあ</span></button>
+            <button type="button" class="scale-btn" data-value="4">🌤<span>おだやか</span></button>
+            <button type="button" class="scale-btn" data-value="5">☀️<span>ごきげん</span></button>
+          </div>
+
+          <label class="field-label">からだ・状況（あてはまるもの）</label>
+          <div class="chips" id="symptomChips"></div>
+
+          <label class="field-label" for="hoursInput">今日つかえる作業時間</label>
+          <div class="hours-row">
+            <input type="range" id="hoursInput" min="0" max="10" step="0.5" value="3" />
+            <output id="hoursOutput">3時間</output>
+          </div>
+
+          <label class="field-label" for="memoInput">ひとことメモ</label>
+          <input type="text" id="memoInput" placeholder="例：子どもが鼻水。午後は様子見" maxlength="120" />
+
+          <button type="button" class="primary-button" id="saveCheckin">今日の記録を保存</button>
+          <p class="saved-note" id="checkinSaved"></p>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>今日のおすすめタスク</h2>
+            <span class="pill" id="recoSummary"></span>
+          </div>
+          <p class="hint" id="recoHint"></p>
+          <ul class="task-list" id="recoList"></ul>
+        </div>
+
+        <div class="card">
+          <h2>今日できたこと</h2>
+          <p class="hint">小さなことでOK。できたことを見える化するとモチベーションが続きます。</p>
+          <form class="inline-form" id="winForm">
+            <input type="text" id="winInput" placeholder="例：請求書を1件送った" maxlength="80" required />
+            <button type="submit" class="small-button">追加</button>
+          </form>
+          <ul class="win-list" id="winList"></ul>
+        </div>
+      </section>
+
+      <!-- ===== タスク ===== -->
+      <section class="view hidden" id="view-tasks">
+        <div class="card">
+          <h2 id="taskFormTitle">タスクを追加</h2>
+          <form id="taskForm">
+            <input type="hidden" id="taskId" />
+            <label class="field-label" for="taskTitle">タスク名</label>
+            <input type="text" id="taskTitle" placeholder="例：A社 LP原稿の初稿" required maxlength="80" />
+
+            <div class="grid-2">
+              <div>
+                <label class="field-label" for="taskClient">クライアント / 案件</label>
+                <input type="text" id="taskClient" list="clientList" placeholder="例：A社" maxlength="40" />
+                <datalist id="clientList"></datalist>
+              </div>
+              <div>
+                <label class="field-label" for="taskDeadline">締切</label>
+                <input type="date" id="taskDeadline" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label class="field-label" for="taskHours">見積時間</label>
+                <select id="taskHours">
+                  <option value="0.5">30分</option>
+                  <option value="1" selected>1時間</option>
+                  <option value="1.5">1.5時間</option>
+                  <option value="2">2時間</option>
+                  <option value="3">3時間</option>
+                  <option value="4">4時間</option>
+                  <option value="6">6時間</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" for="taskPriority">優先度</label>
+                <select id="taskPriority">
+                  <option value="high">高</option>
+                  <option value="mid" selected>中</option>
+                  <option value="low">低</option>
+                </select>
+              </div>
+            </div>
+
+            <label class="field-label">必要なエネルギー</label>
+            <div class="segmented" id="taskEnergy">
+              <button type="button" data-value="light" class="active">🍃 軽い<small>事務・整理・返信</small></button>
+              <button type="button" data-value="mid">🌿 ふつう<small>制作・執筆</small></button>
+              <button type="button" data-value="heavy">🌳 重い<small>企画・営業・新規</small></button>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-button" id="taskSubmit">追加する</button>
+              <button type="button" class="text-button hidden" id="taskCancel">キャンセル</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>タスク一覧</h2>
+            <select id="clientFilter" class="filter-select">
+              <option value="">すべて</option>
+            </select>
+          </div>
+          <div class="tabs" id="statusTabs">
+            <button type="button" data-status="open" class="active">未完了</button>
+            <button type="button" data-status="done">完了</button>
+          </div>
+          <ul class="task-list" id="taskList"></ul>
+          <p class="empty" id="taskEmpty">まだタスクがありません。上のフォームから追加してみましょう。</p>
+        </div>
+      </section>
+
+      <!-- ===== カレンダー ===== -->
+      <section class="view hidden" id="view-calendar">
+        <div class="card">
+          <div class="cal-nav">
+            <button type="button" class="icon-button" id="prevMonth" aria-label="前の月">‹</button>
+            <h2 id="calTitle"></h2>
+            <button type="button" class="icon-button" id="nextMonth" aria-label="次の月">›</button>
+          </div>
+          <div class="cal-weekdays">
+            <span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+          <div class="legend">
+            <span><i class="lg lg-period"></i>生理</span>
+            <span><i class="lg lg-predict"></i>予測</span>
+            <span><i class="lg lg-ovu"></i>排卵期</span>
+            <span><i class="lg lg-pms"></i>PMS注意</span>
+            <span><i class="lg lg-deadline"></i>締切</span>
+          </div>
+        </div>
+
+        <div class="card" id="dayDetail">
+          <h2 id="dayDetailTitle">日付を選んでください</h2>
+          <div id="dayDetailBody"></div>
+          <div class="form-actions">
+            <button type="button" class="secondary-button" id="togglePeriod">この日を生理開始日にする</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 記録 ===== -->
+      <section class="view hidden" id="view-log">
+        <div class="card">
+          <h2>直近14日のエネルギーと気分</h2>
+          <p class="hint">周期と重ねて見ると、「この時期は無理しない」が計画に落とせます。</p>
+          <div class="chart" id="chart"></div>
+        </div>
+        <div class="card">
+          <h2>今週のふりかえり</h2>
+          <div class="stats" id="stats"></div>
+        </div>
+        <div class="card">
+          <h2>よく出るサイン</h2>
+          <p class="hint">直近3周期分の記録から集計しています。</p>
+          <ul class="symptom-stats" id="symptomStats"></ul>
+        </div>
+        <div class="card">
+          <h2>これまでの記録</h2>
+          <ul class="history" id="history"></ul>
+        </div>
+      </section>
+
+      <!-- ===== 設定 ===== -->
+      <section class="view hidden" id="view-settings">
+        <div class="card">
+          <h2>周期の設定</h2>
+          <div class="grid-2">
+            <div>
+              <label class="field-label" for="cycleLength">周期の長さ（日）</label>
+              <input type="number" id="cycleLength" min="20" max="45" />
+            </div>
+            <div>
+              <label class="field-label" for="periodLength">生理の日数</label>
+              <input type="number" id="periodLength" min="2" max="10" />
+            </div>
+          </div>
+          <p class="hint" id="cycleAuto"></p>
+          <label class="field-label" for="pmsDays">PMSに注意する日数（生理前）</label>
+          <input type="number" id="pmsDays" min="0" max="10" />
+          <button type="button" class="primary-button" id="saveSettings">設定を保存</button>
+          <p class="saved-note" id="settingsSaved"></p>
+        </div>
+
+        <div class="card">
+          <h2>データ</h2>
+          <p class="hint">データはこの端末のブラウザにだけ保存されます。機種変更や別端末で使うときはバックアップを取ってください。</p>
+          <div class="form-actions">
+            <button type="button" class="secondary-button" id="exportBtn">バックアップを書き出す</button>
+            <label class="secondary-button file-label">
+              バックアップを読み込む
+              <input type="file" id="importInput" accept="application/json" hidden />
+            </label>
+            <button type="button" class="text-button danger" id="resetBtn">すべてのデータを削除</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>このアプリについて</h2>
+          <p class="hint">
+            生理周期の時期はあくまで目安です。体調がつらいときは、アプリの表示に関係なく休んでください。
+            医療的な判断が必要なときは医師に相談を。
+          </p>
+        </div>
+      </section>
+
+      <nav class="tabbar">
+        <button type="button" class="tab active" data-view="home">🏠<span>ホーム</span></button>
+        <button type="button" class="tab" data-view="tasks">✅<span>タスク</span></button>
+        <button type="button" class="tab" data-view="calendar">📅<span>周期</span></button>
+        <button type="button" class="tab" data-view="log">📈<span>記録</span></button>
+        <button type="button" class="tab" data-view="settings">⚙️<span>設定</span></button>
+      </nav>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
