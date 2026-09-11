@@ -1,0 +1,38 @@
+:root{--bg:#ffffff;--text:#1f2933;--muted:#5b6773;--line:#e4e8ec;--accent:#1d4ed8;--accent-soft:#eff4ff;--cta:#ea580c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Hiragino Sans","Yu Gothic","Meiryo",system-ui,sans-serif;line-height:1.9;font-size:16px}
+.site-header{border-bottom:1px solid var(--line);padding:16px 20px}
+.site-title{color:var(--text);text-decoration:none;font-weight:700;font-size:1.05rem}
+main{width:min(100%,720px);margin:0 auto;padding:28px 20px 64px}
+h1{font-size:1.7rem;line-height:1.5;margin:.2em 0 .8em}
+h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-top:.6em;border-top:2px solid var(--line)}
+h3{font-size:1.08rem;margin:1.8em 0 .5em;color:#0f172a}
+p{margin:0 0 1.1em}
+ul,ol{margin:0 0 1.3em;padding-left:1.4em}
+li{margin-bottom:.45em}
+a{color:var(--accent)}
+code{background:#f4f6f8;padding:.1em .35em;border-radius:3px;font-size:.92em}
+.table-wrap{overflow-x:auto;margin:0 0 1.5em}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#f7f9fb;font-weight:600;white-space:nowrap}
+blockquote.callout{margin:0 0 1.5em;padding:14px 18px;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 6px 6px 0}
+blockquote.cta{background:#fff5ed;border-left-color:var(--cta)}
+blockquote.cta a{display:inline-block;margin-top:.5em;background:var(--cta);color:#fff;text-decoration:none;padding:11px 26px;border-radius:999px;font-weight:700}
+.faq-q{font-weight:700;margin-bottom:.3em}
+.faq-a{margin-bottom:1.5em;color:var(--muted)}
+.lede{color:var(--muted)}
+.meta{color:var(--muted);font-size:.87rem;margin-bottom:1.5em}
+.todo{background:#fff3cd;border:1px solid #e0b400;padding:2px 6px;border-radius:3px;font-size:.86em}
+.card-list{list-style:none;padding:0}
+.card-list li{border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-bottom:12px}
+.card-list a{font-weight:700;text-decoration:none;font-size:1.02rem}
+.card-list p{margin:.4em 0 0;color:var(--muted);font-size:.92rem}
+.site-footer{border-top:1px solid var(--line);padding:20px;color:var(--muted);font-size:.85rem;text-align:center}
+@media(prefers-color-scheme:dark){
+:root{--bg:#12161a;--text:#e6eaee;--muted:#9aa5b1;--line:#2a323a;--accent:#7aa2ff;--accent-soft:#1b2536}
+th{background:#1a2128}
+code{background:#1c232a}
+blockquote.cta{background:#2a1d14}
+.todo{background:#4a3a00;border-color:#8a6d00;color:#ffe9a3}
+}

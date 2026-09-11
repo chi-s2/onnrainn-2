@@ -1,0 +1,10 @@
+{
+  "site_name": "営業・マーケティングの選び方ガイド",
+  "site_description": "営業代行と営業スクールの選び方を、契約前に確認すべき基準から整理したメディアです。",
+  "base_url": "https://example.vercel.app",
+  "author": "",
+  "line_url": "https://example.com/line",
+  "line_label_top": "LINEで無料相談する",
+  "line_label_bottom": "LINEで無料相談する",
+  "_note": "base_url と line_url は公開前に必ず実際の値へ差し替える。line_url は各記事ごとに utm_content が自動付与される。"
+}
