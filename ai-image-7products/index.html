@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1キャラ→7商品 実践ワークブック｜AI画像副業ロードマップ</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <p class="eyebrow">AI画像副業ロードマップ</p>
+        <h1>1キャラから7商品へ<br />実践ワークブック</h1>
+        <p class="lead">
+          コピペ用画像プロンプト20本と、7商品展開テンプレート・30日ロードマップのチェックシートをまとめたページです。
+          入力とチェックはこのブラウザにのみ保存されます。
+        </p>
+        <ol class="flow">
+          <li>1キャラを設計</li>
+          <li>基準画像を固定</li>
+          <li>差分を量産</li>
+          <li>7商品へ展開</li>
+          <li>シリーズ化</li>
+          <li>販売ページ公開</li>
+          <li>反応を次へ</li>
+        </ol>
+      </header>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>1. 基準キャラクターの設計メモ</h2>
+        </div>
+        <p class="section-note">
+          差分を作る前に、「何を絶対に残すのか」を先に決めます。固定ポイントは増やしすぎず、3〜5個までに絞ってください。
+        </p>
+        <div id="designFields"></div>
+        <p class="hint">
+          基準画像は「一番派手な1枚」ではなく、顔・髪型・服装・全身のシルエットを確認しやすい正面寄りの全身画像を選びます。
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>2. コピペ用画像プロンプト20本</h2>
+        </div>
+        <p class="section-note">
+          タイトルを押すと本文が開きます。⑤以降は、必ず基準画像を参照画像として添付してから使ってください。
+        </p>
+        <div id="prompts"></div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+        <p class="hint">
+          20本は20枚を作って終わりの文章ではなく、量産ラインの型です。「春」を「夏」へ、「ありがとう」を別の言葉へ、「本」を「コーヒーカップ」へ――一部だけ差し替えて何度も使い回します。
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>3. 7商品展開テンプレート</h2>
+          <span class="counter" id="productCounter"></span>
+        </div>
+        <p class="section-note">
+          7つ同時に進めると、どれも途中で止まります。まず1商品を公開まで完成させ、そこから素材を転用して横へ広げてください。
+        </p>
+        <ul class="checklist" id="productChecklist"></ul>
+        <p class="caution">
+          <strong>グッズ化の注意：</strong>
+          画像が完成しても、そのまますべての制作サービスで使えるわけではありません。画像サイズ、解像度、カラーモード、入稿形式、利用規約は制作サービスごとに異なります。画像生成と入稿データの準備は別の工程として考えてください。
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>4. 30日ロードマップ</h2>
+          <span class="counter" id="roadmapCounter"></span>
+        </div>
+        <p class="section-note">
+          「教材は読んだけれど何も作っていない」を防ぐためのチェックシートです。1か月で完璧を目指さず、まず一周してください。
+        </p>
+        <ul class="checklist" id="roadmapChecklist"></ul>
+        <p class="caution">
+          <strong>売上について：</strong>
+          この流れを実践すれば必ず月10万円になるわけではありません。売上は商品内容、価格、需要、販売場所、集客方法、継続期間によって変わり、販売手数料も差し引かれます。金額は商品資産の積み上げ方を考えるための目安として扱ってください。
+        </p>
+      </section>
+
+      <footer class="footer">
+        <button class="text-button" type="button" id="resetButton">メモとチェックをリセットする</button>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
