@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI副業タイプ診断</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --main-deep:#2B3A67;
+    --main:#4257A0;
+    --soft:#EEF1FA;
+    --line:#CCD4EE;
+    --accent:#FFD27A;
+    --ink:#1F2433;
+    --ink-sub:#5E6577;
+    --white:#FFFFFF;
+    --line-brand:#06C755;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    font-family:'Noto Sans JP',sans-serif;
+    background:#F3F5FB;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    color:var(--ink);
+  }
+  .phone{
+    width:100%;
+    max-width:420px;
+    min-height:100vh;
+    background:var(--white);
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .screen{display:none;flex-direction:column;flex:1;min-height:100vh;}
+  .screen.active{display:flex;}
+
+  /* ===== ヘッダー（トップ） ===== */
+  .header-band{
+    background:linear-gradient(160deg,var(--main-deep) 0%,var(--main) 100%);
+    padding:34px 28px 90px;
+    position:relative;
+    z-index:1;
+    clip-path:ellipse(140% 100% at 50% 0%);
+  }
+  .brand{
+    display:flex;align-items:center;gap:8px;
+    color:rgba(255,255,255,.9);
+    font-size:12px;font-weight:500;letter-spacing:.14em;
+    margin-bottom:22px;
+  }
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);}
+  .hooks{list-style:none;margin-bottom:20px;}
+  .hooks li{
+    color:rgba(255,255,255,.88);
+    font-size:13px;line-height:1.7;
+    padding-left:14px;position:relative;
+  }
+  .hooks li::before{content:"";position:absolute;left:0;top:.75em;width:6px;height:2px;background:var(--accent);}
+  h1{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    color:#fff;font-size:15px;font-weight:500;
+    letter-spacing:.1em;margin-bottom:10px;
+  }
+  .title-main{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    color:#fff;font-size:34px;font-weight:900;
+    line-height:1.35;letter-spacing:.02em;
+  }
+  .title-main .accent{color:var(--accent);}
+  .card-area{
+    position:relative;z-index:2;
+    padding:0 22px;margin-top:-58px;
+    flex:1;display:flex;flex-direction:column;
+  }
+  .lead-card{
+    background:var(--white);border-radius:20px;
+    box-shadow:0 10px 30px rgba(43,58,103,.14);
+    padding:24px 22px;text-align:center;
+  }
+  .lead-card .q{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:17px;font-weight:700;line-height:1.7;color:var(--ink);
+  }
+  .lead-card .q .u{
+    background:linear-gradient(transparent 68%,#FFE6B0 68%);
+    padding:0 2px;
+  }
+  .lead-card .sub{
+    margin-top:10px;font-size:13px;color:var(--ink-sub);line-height:1.8;
+  }
+  .conditions{
+    margin-top:18px;text-align:left;
+    background:var(--soft);border:1px solid var(--line);
+    border-radius:16px;padding:14px 16px;
+  }
+  .conditions .c-title{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:13px;font-weight:700;color:var(--main-deep);
+    margin-bottom:8px;text-align:center;
+  }
+  .conditions ol{list-style:none;counter-reset:c;}
+  .conditions li{
+    counter-increment:c;
+    font-size:13px;line-height:1.7;padding:4px 0 4px 30px;position:relative;
+  }
+  .conditions li::before{
+    content:counter(c);
+    position:absolute;left:0;top:5px;
+    width:20px;height:20px;border-radius:50%;
+    background:var(--main);color:#fff;
+    font-size:11px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .types{display:flex;gap:8px;margin-top:18px;}
+  .type{
+    flex:1;background:var(--soft);
+    border:1px solid var(--line);
+    border-radius:14px;padding:12px 6px 10px;text-align:center;
+  }
+  .type .icon{
+    width:38px;height:38px;margin:0 auto 8px;border-radius:50%;
+    background:var(--white);display:flex;align-items:center;justify-content:center;
+    border:1.5px solid var(--line);
+  }
+  .type .t-label{
+    font-size:10px;font-weight:500;color:var(--main-deep);
+    letter-spacing:.1em;margin-bottom:2px;
+  }
+  .type .t-name{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:13px;font-weight:700;color:var(--ink);line-height:1.4;
+  }
+  .features{display:flex;justify-content:center;gap:18px;margin:20px 0 4px;}
+  .feature{text-align:center;font-size:11.5px;color:var(--ink-sub);line-height:1.5;}
+  .feature b{
+    display:block;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:15px;font-weight:900;color:var(--main-deep);margin-bottom:2px;
+  }
+  .cta-area{margin-top:auto;padding:20px 0 30px;}
+  .cta{
+    display:block;width:100%;border:none;
+    background:linear-gradient(135deg,var(--main),var(--main-deep));
+    color:#fff;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:17px;font-weight:700;letter-spacing:.08em;
+    padding:18px;border-radius:100px;
+    box-shadow:0 8px 20px rgba(43,58,103,.32);
+    cursor:pointer;transition:transform .15s ease;
+    text-align:center;text-decoration:none;
+  }
+  .cta:active{transform:scale(.98);}
+  .cta .arrow{margin-left:6px;}
+  .cta-note{
+    text-align:center;font-size:11.5px;color:var(--ink-sub);
+    margin-top:10px;letter-spacing:.04em;
+  }
+
+  /* ===== 質問画面 ===== */
+  .quiz-head{
+    background:linear-gradient(160deg,var(--main-deep) 0%,var(--main) 100%);
+    padding:22px 24px 26px;
+  }
+  .quiz-head .brand{margin-bottom:14px;}
+  .progress-label{
+    display:flex;justify-content:space-between;align-items:baseline;
+    color:#fff;margin-bottom:8px;
+  }
+  .progress-label .num{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:20px;font-weight:900;
+  }
+  .progress-label .num small{font-size:13px;font-weight:500;opacity:.85;}
+  .progress-label .pct{font-size:12px;opacity:.9;}
+  .progress-bar{
+    height:8px;border-radius:100px;
+    background:rgba(255,255,255,.25);overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;border-radius:100px;
+    background:var(--accent);width:0%;
+    transition:width .35s ease;
+  }
+  .quiz-body{
+    flex:1;display:flex;flex-direction:column;
+    padding:26px 22px 30px;
+  }
+  .q-text{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:19px;font-weight:700;line-height:1.65;
+    margin-bottom:22px;min-height:3.3em;
+  }
+  .opts{display:flex;flex-direction:column;gap:12px;}
+  .opt{
+    width:100%;border:1.5px solid var(--line);
+    background:var(--white);color:var(--ink);
+    font-family:'Noto Sans JP',sans-serif;
+    font-size:15px;font-weight:500;
+    padding:16px 18px;border-radius:14px;
+    text-align:left;cursor:pointer;
+    transition:background .15s ease,border-color .15s ease,transform .1s ease;
+    display:flex;align-items:center;gap:12px;
+  }
+  .opt .mark{
+    width:22px;height:22px;flex-shrink:0;
+    border-radius:50%;border:2px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s ease;
+  }
+  .opt:active{transform:scale(.985);}
+  .opt.selected{
+    background:var(--soft);border-color:var(--main);
+  }
+  .opt.selected .mark{
+    background:var(--main);border-color:var(--main);
+  }
+  .opt.selected .mark::after{
+    content:"";width:8px;height:8px;border-radius:50%;background:#fff;
+  }
+  .back-link{
+    margin-top:auto;padding-top:22px;
+    background:none;border:none;
+    color:var(--ink-sub);font-size:13px;
+    cursor:pointer;letter-spacing:.04em;
+    font-family:'Noto Sans JP',sans-serif;
+  }
+
+  /* ===== 結果画面 ===== */
+  .result-head{
+    background:linear-gradient(160deg,var(--main-deep) 0%,var(--main) 100%);
+    padding:30px 28px 92px;text-align:center;
+    clip-path:ellipse(140% 100% at 50% 0%);
+  }
+  .result-head .lbl{
+    color:rgba(255,255,255,.9);font-size:12px;
+    letter-spacing:.2em;font-weight:500;margin-bottom:10px;
+  }
+  .result-head .r-catch{
+    color:var(--accent);
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:14px;font-weight:700;margin-bottom:6px;
+  }
+  .result-head .r-type{
+    color:#fff;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:30px;font-weight:900;line-height:1.35;
+  }
+  .result-card{
+    background:var(--white);border-radius:20px;
+    box-shadow:0 10px 30px rgba(43,58,103,.14);
+    padding:26px 22px;
+  }
+  .result-card .r-icon{
+    width:64px;height:64px;margin:0 auto 14px;border-radius:50%;
+    background:var(--soft);border:1.5px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .result-card .r-desc{
+    font-size:14px;line-height:2;color:var(--ink);
+  }
+  .r-sec{
+    margin-top:20px;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:14px;font-weight:700;color:var(--main-deep);
+  }
+  .r-points{
+    margin-top:10px;display:flex;flex-direction:column;gap:10px;
+  }
+  .r-point{
+    display:flex;gap:10px;align-items:flex-start;
+    background:var(--soft);
+    border-radius:12px;padding:12px 14px;
+    font-size:13px;line-height:1.7;
+  }
+  .r-point.warn{background:#FFF6E3;}
+  .r-point svg{flex-shrink:0;margin-top:3px;}
+  .line-area{
+    margin-top:22px;
+    background:var(--white);border-radius:20px;
+    box-shadow:0 10px 30px rgba(43,58,103,.10);
+    padding:22px;text-align:center;
+  }
+  .line-area .l-msg{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:15px;font-weight:700;line-height:1.8;margin-bottom:12px;
+  }
+  .line-area .l-gifts{
+    text-align:left;font-size:13px;line-height:1.8;color:var(--ink-sub);
+    margin:0 0 16px 1.2em;
+  }
+  .line-area .l-keyword{
+    display:inline-block;background:var(--soft);
+    border-radius:6px;padding:0 6px;font-weight:700;color:var(--main-deep);
+  }
+  .line-btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;border:none;
+    background:var(--line-brand);color:#fff;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:16px;font-weight:700;letter-spacing:.05em;
+    padding:17px;border-radius:100px;
+    box-shadow:0 8px 20px rgba(6,199,85,.30);
+    cursor:pointer;text-decoration:none;
+    transition:transform .15s ease;
+  }
+  .line-btn:active{transform:scale(.98);}
+  .disclaimer{
+    margin-top:16px;font-size:11px;line-height:1.7;color:var(--ink-sub);text-align:left;
+  }
+  .retry{
+    margin:22px auto 34px;display:block;
+    background:none;border:none;
+    color:var(--ink-sub);font-size:13px;
+    cursor:pointer;letter-spacing:.04em;text-decoration:underline;
+    font-family:'Noto Sans JP',sans-serif;
+  }
+
+  .fade-in{animation:rise .45s ease both;}
+  @media (prefers-reduced-motion:no-preference){
+    .lead-card,.types,.features{animation:rise .6s ease both;}
+    .types{animation-delay:.12s;}
+    .features{animation-delay:.22s;}
+  }
+  @keyframes rise{
+    from{opacity:0;transform:translateY(14px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- ============ トップ画面 ============ -->
+  <section class="screen active" id="screen-top">
+    <header class="header-band">
+      <div class="brand"><span class="dot"></span>AI SIDE JOB CHECK</div>
+      <ul class="hooks">
+        <li>AIを勉強したのに、1円にもなっていない</li>
+        <li>ChatGPTやClaudeを触っただけで終わった</li>
+        <li>結局、自分は何から始めればいいの？</li>
+      </ul>
+      <h1>30秒でわかる</h1>
+      <div class="title-main">あなたに合う<br><span class="accent">AI副業タイプ</span>診断</div>
+    </header>
+
+    <main class="card-area">
+      <div class="lead-card">
+        <p class="q">大事なのは「なんのAIを使うか」<br>ではなく<br><span class="u">「なんの仕事にAIを使うか」</span></p>
+        <p class="sub">10個の質問に答えるだけで、<br>今のあなたに合うAIの使い道がわかります。</p>
+
+        <div class="conditions">
+          <p class="c-title">続けやすいAI副業の3つの条件</p>
+          <ol>
+            <li>今のスキルや経験から始められる</li>
+            <li>作業の多くをAIに任せられる</li>
+            <li>1件あたりの単価を上げていける</li>
+          </ol>
+        </div>
+
+        <div class="types">
+          <div class="type">
+            <div class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2B3A67" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            </div>
+            <div class="t-label">TYPE 01</div>
+            <div class="t-name">AIライター</div>
+          </div>
+          <div class="type">
+            <div class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2B3A67" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8"/><path d="M9 10l-2 2 2 2"/><path d="M15 10l2 2-2 2"/></svg>
+            </div>
+            <div class="t-label">TYPE 02</div>
+            <div class="t-name">仕組みづくり</div>
+          </div>
+          <div class="type">
+            <div class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2B3A67" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-7-7 18-2-8z"/></svg>
+            </div>
+            <div class="t-label">TYPE 03</div>
+            <div class="t-name">発信・<br>コンテンツ</div>
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="feature"><b>全10問</b>選ぶだけ</div>
+          <div class="feature"><b>約30秒</b>で完了</div>
+          <div class="feature"><b>無料</b>登録不要</div>
+        </div>
+      </div>
+
+      <div class="cta-area">
+        <button class="cta" onclick="startQuiz()">診断をはじめる<span class="arrow">→</span></button>
+        <p class="cta-note">タップするとすぐに診断が始まります</p>
+      </div>
+    </main>
+  </section>
+
+  <!-- ============ 質問画面 ============ -->
+  <section class="screen" id="screen-quiz">
+    <div class="quiz-head">
+      <div class="brand"><span class="dot"></span>AI SIDE JOB CHECK</div>
+      <div class="progress-label">
+        <div class="num">Q<span id="q-num">1</span><small> / 10</small></div>
+        <div class="pct" id="q-pct">10%</div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="q-fill"></div></div>
+    </div>
+    <div class="quiz-body">
+      <p class="q-text fade-in" id="q-text"></p>
+      <div class="opts" id="q-opts"></div>
+      <button class="back-link" id="q-back" onclick="goBack()">← ひとつ前の質問に戻る</button>
+    </div>
+  </section>
+
+  <!-- ============ 結果画面 ============ -->
+  <section class="screen" id="screen-result">
+    <header class="result-head">
+      <p class="lbl">RESULT</p>
+      <p class="r-catch" id="r-catch"></p>
+      <div class="r-type" id="r-type"></div>
+    </header>
+    <main class="card-area">
+      <div class="result-card fade-in">
+        <div class="r-icon" id="r-icon"></div>
+        <p class="r-desc" id="r-desc"></p>
+        <p class="r-sec">うまくいく人の共通点</p>
+        <div class="r-points" id="r-good"></div>
+        <p class="r-sec">つまずきやすいパターン</p>
+        <div class="r-points" id="r-warn"></div>
+      </div>
+
+      <div class="line-area fade-in">
+        <p class="l-msg">あなたのタイプに合った<br>最初の一歩を公式LINEでお届けします</p>
+        <ul class="l-gifts">
+          <li><span id="r-gift"></span></li>
+          <li>AIに任せる作業・自分でやる作業の分け方</li>
+          <li>個別の相談も受け付けています</li>
+        </ul>
+        <a class="line-btn" id="line-btn" href="#" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s5.9-3.5 8-6c1.5-1.6 2-3.2 2-4.8C22 6.6 17.5 3 12 3z"/></svg>
+          LINEで受け取る
+        </a>
+        <p class="cta-note">登録後に <span class="l-keyword" id="r-keyword"></span> と送ってください</p>
+        <p class="disclaimer">※この診断は向き・不向きの目安です。収入や成果を保証するものではありません。</p>
+      </div>
+
+      <button class="retry" onclick="restart()">もう一度診断する</button>
+    </main>
+  </section>
+
+</div>
+
+<script>
+// ===== 設定 =====
+// 公開前に公式LINEの友だち追加URLに差し替える
+const LINE_URL = "https://lin.ee/your-line-url";
+
+// ===== 質問データ =====
+// Q1: 属性確認用（判定に反映しない type:"attr"）
+// Q2-10: 判定用 direction:"writer"=AIライター / "builder"=仕組みづくり / "creator"=発信・コンテンツ
+const QUESTIONS = [
+  {
+    text:"副業に使える時間は、1日どのくらいですか？",
+    type:"attr",
+    options:["30分くらい","1時間くらい","2時間以上","平日は難しく、週末にまとめて"]
+  },
+  {
+    text:"文章を読んだり、整えたりするのは苦にならない",
+    type:"scale", direction:"writer"
+  },
+  {
+    text:"手順やマニュアルがあれば、その通りに進めるのが得意だ",
+    type:"scale", direction:"writer"
+  },
+  {
+    text:"まずは誰かの依頼を受けて、確実に報酬をもらう形で始めたい",
+    type:"scale", direction:"writer"
+  },
+  {
+    text:"アプリやツールの設定を、調べながら触るのが好きだ",
+    type:"scale", direction:"builder"
+  },
+  {
+    text:"同じ作業を繰り返すより、仕組みにして自動化したい",
+    type:"scale", direction:"builder"
+  },
+  {
+    text:"作業時間が多少かかっても、1件の単価が高い仕事をしたい",
+    type:"scale", direction:"builder"
+  },
+  {
+    text:"SNSで自分の考えや日常を発信するのに抵抗がない",
+    type:"scale", direction:"creator"
+  },
+  {
+    text:"自分の経験や失敗談を、誰かの役に立てたいと思う",
+    type:"scale", direction:"creator"
+  },
+  {
+    text:"すぐに結果が出なくても、コツコツ積み上げるのは苦じゃない",
+    type:"scale", direction:"creator"
+  }
+];
+
+const SCALE_OPTIONS = ["そう思う","どちらかといえばそう思う","あまり思わない","思わない"];
+// そう思う=3点 → 思わない=0点（その設問の方向タイプへの加点）
+const SCALE_POINTS = [3,2,1,0];
+
+// 同点のときに優先するタイプの順番（始めやすい順）
+const TYPE_ORDER = ["writer","builder","creator"];
+
+// ===== 結果データ =====
+const RESULTS = {
+  writer:{
+    catch:"あなたに向いているのは…",
+    type:"AIライター型",
+    icon:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2B3A67" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+    desc:"あなたは、決まった手順をていねいにこなし、文章の質を整えるのが得意なタイプです。下書きはAIに任せて、あなたは確認と仕上げに集中する。この分担で、スキマ時間でも安定して仕事を受けられる働き方が向いています。",
+    good:[
+      "AIの下書きをそのまま出さず、自分の目で事実と表現を確認している",
+      "最初は単価より実績づくりを優先し、得意ジャンルを絞っていく",
+      "使ったプロンプトや手順をメモして、次の仕事で再利用している"
+    ],
+    warn:[
+      "AIの文章を確認せずに納品して、修正が増えてしまう",
+      "低単価の案件を数だけこなして、時間がなくなる"
+    ],
+    gift:"AIライターの始め方ロードマップ",
+    keyword:"ライター"
+  },
+  builder:{
+    catch:"あなたに向いているのは…",
+    type:"仕組みづくり型",
+    icon:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2B3A67" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8"/><path d="M9 10l-2 2 2 2"/><path d="M15 10l2 2-2 2"/></svg>',
+    desc:"あなたは、ツールを触りながら「もっと楽にできないか」を考えられるタイプです。診断ページや業務の自動化など、AIを使って「仕組み」を作って納品する仕事は、1件の単価を上げやすく、あなたの工夫がそのまま価値になります。",
+    good:[
+      "まず自分の作業を自動化して、その経験をそのまま商品にしている",
+      "作ったものを実績として公開し、次の依頼につなげている",
+      "依頼者の困りごとを先に聞いてから、作るものを決めている"
+    ],
+    warn:[
+      "ツール選びや勉強ばかりで、誰かに届ける前に止まってしまう",
+      "作り込みすぎて、時間に見合わない価格で引き受けてしまう"
+    ],
+    gift:"AIで作れる高単価な納品物リスト",
+    keyword:"仕組み"
+  },
+  creator:{
+    catch:"あなたに向いているのは…",
+    type:"発信・コンテンツ型",
+    icon:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2B3A67" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-7-7 18-2-8z"/></svg>',
+    desc:"あなたは、自分の経験や考えを言葉にして届けられるタイプです。投稿のネタ出しや下書きをAIに手伝ってもらいながら、SNSやnoteで発信を積み上げていく働き方が向いています。時間はかかりますが、育つほど自分の資産になります。",
+    good:[
+      "AIに丸投げせず、自分の体験談を1つ入れてから投稿している",
+      "伸びた投稿の型を分析して、次の投稿に活かしている",
+      "最初の3か月は数字より「続けること」を目標にしている"
+    ],
+    warn:[
+      "AIっぽい文章を量産して、誰の投稿か分からなくなる",
+      "1か月で結果が出ずに、発信をやめてしまう"
+    ],
+    gift:"AIで投稿を作る1週間テンプレート",
+    keyword:"発信"
+  }
+};
+
+// ===== 状態 =====
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+
+const $ = id => document.getElementById(id);
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function startQuiz(){
+  current = 0;
+  answers.fill(null);
+  renderQuestion();
+  show("screen-quiz");
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  $("q-num").textContent = current+1;
+  $("q-pct").textContent = Math.round(((current+1)/QUESTIONS.length)*100) + "%";
+  $("q-fill").style.width = ((current+1)/QUESTIONS.length)*100 + "%";
+
+  const qText = $("q-text");
+  qText.textContent = q.text;
+  qText.classList.remove("fade-in");
+  void qText.offsetWidth;
+  qText.classList.add("fade-in");
+
+  const opts = q.type==="attr" ? q.options : SCALE_OPTIONS;
+  const wrap = $("q-opts");
+  wrap.innerHTML = "";
+  opts.forEach((label,i)=>{
+    const btn = document.createElement("button");
+    btn.className = "opt" + (answers[current]===i ? " selected" : "");
+    btn.innerHTML = '<span class="mark"></span>' + label;
+    btn.onclick = ()=>selectOption(i,btn);
+    wrap.appendChild(btn);
+  });
+
+  $("q-back").style.visibility = current===0 ? "hidden" : "visible";
+}
+
+function selectOption(i,btn){
+  answers[current] = i;
+  document.querySelectorAll(".opt").forEach(o=>o.classList.remove("selected"));
+  btn.classList.add("selected");
+  setTimeout(()=>{
+    if(current < QUESTIONS.length-1){
+      current++;
+      renderQuestion();
+    }else{
+      showResult();
+    }
+  }, 280);
+}
+
+function goBack(){
+  if(current>0){
+    current--;
+    renderQuestion();
+  }
+}
+
+function calcResult(){
+  const score = {}, max = {};
+  TYPE_ORDER.forEach(t=>{ score[t]=0; max[t]=0; });
+  QUESTIONS.forEach((q,idx)=>{
+    if(q.type!=="scale") return;
+    score[q.direction] += SCALE_POINTS[answers[idx]];
+    max[q.direction] += 3;
+  });
+  // 設問数が変わっても公平になるよう、満点比で比較する
+  let best = TYPE_ORDER[0];
+  TYPE_ORDER.forEach(t=>{
+    if(score[t]/max[t] > score[best]/max[best]) best = t;
+  });
+  return best;
+}
+
+function checkIcon(color){
+  return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="'+color+'" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+}
+function warnIcon(){
+  return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C98A12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>';
+}
+
+function showResult(){
+  const r = RESULTS[calcResult()];
+  $("r-catch").textContent = r.catch;
+  $("r-type").innerHTML = r.type;
+  $("r-icon").innerHTML = r.icon;
+  $("r-desc").textContent = r.desc;
+  $("r-good").innerHTML = r.good.map(p=>
+    '<div class="r-point">'+checkIcon("#2B3A67")+'<span>'+p+'</span></div>'
+  ).join("");
+  $("r-warn").innerHTML = r.warn.map(p=>
+    '<div class="r-point warn">'+warnIcon()+'<span>'+p+'</span></div>'
+  ).join("");
+  $("r-gift").textContent = r.gift;
+  $("r-keyword").textContent = "「" + r.keyword + "」";
+  $("line-btn").href = LINE_URL;
+  show("screen-result");
+}
+
+function restart(){
+  show("screen-top");
+}
+</script>
+</body>
+</html>
